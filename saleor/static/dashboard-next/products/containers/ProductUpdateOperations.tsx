@@ -206,6 +206,7 @@ const ProductUpdateOperations: React.StatelessComponent<
                               reorderProductImages.mutate({ variables })
                           },
                           updateProduct: {
+                            called: updateProduct.called,
                             data: updateProduct.data,
                             loading: updateProduct.loading,
                             mutate: variables =>

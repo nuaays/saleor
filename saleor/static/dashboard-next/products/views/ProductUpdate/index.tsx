@@ -10,7 +10,7 @@ import Messages from "../../../components/messages";
 import Navigator from "../../../components/Navigator";
 import { WindowTitle } from "../../../components/WindowTitle";
 import i18n from "../../../i18n";
-import { decimal, maybe } from "../../../misc";
+import { decimal, getMutationState, maybe } from "../../../misc";
 import { productTypeUrl } from "../../../productTypes/urls";
 import ProductUpdatePage from "../../components/ProductUpdatePage";
 import ProductUpdateOperations from "../../containers/ProductUpdateOperations";
@@ -124,9 +124,11 @@ export const ProductUpdate: React.StatelessComponent<ProductUpdateProps> = ({
                           reorderProductImages.loading ||
                           updateProduct.loading ||
                           loading;
-                        const formSubmitState = disableFormSave
-                          ? "loading"
-                          : "idle";
+                        const formTransitionState = getMutationState(
+                          updateProduct.called,
+                          updateProduct.loading,
+                          maybe(() => updateProduct.data.productUpdate.errors)
+                        );
                         return (
                           <>
                             <WindowTitle
@@ -137,7 +139,7 @@ export const ProductUpdate: React.StatelessComponent<ProductUpdateProps> = ({
                               collections={allCollections}
                               disabled={disableFormSave}
                               errors={errors}
-                              saveButtonBarState={formSubmitState}
+                              saveButtonBarState={formTransitionState}
                               images={images}
                               header={product ? product.name : undefined}
                               placeholderImage={placeholderImg}
